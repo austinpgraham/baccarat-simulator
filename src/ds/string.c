@@ -31,8 +31,11 @@ int str_to_int(const char *str)
 
     int i = 0;
     // Skip any initial whitespace
-    while (str[i++] == ' ')
-        ;
+    while (str[i] == ' ')
+    {
+        i++;
+    }
+
     do
     {
         char c = str[i];

@@ -6,7 +6,6 @@ int main(int argc, char *argv[])
 {
     menuoptions_t options = {0, 1, RANDOM_STRATEGY};
     int success = parse_command_line(argc, argv, &options);
-    printf("Successful: %d\n", success);
     if (!success || options.show_help)
     {
         display_help_menu();

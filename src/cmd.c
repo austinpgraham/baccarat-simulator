@@ -67,7 +67,7 @@ int parse_command_line(int argc, char *argv[], menuoptions_t *options)
 
         if (!set_contains(argv[i], options_set))
         {
-            printf("Unknown argument: %s\n", argv[i]);
+            printf("Unknown argument: %s\n\n", argv[i]);
             return 0;
         }
 
@@ -75,7 +75,7 @@ int parse_command_line(int argc, char *argv[], menuoptions_t *options)
         // we don't have one, raise an error.
         if (i == argc)
         {
-            printf("Invalid argument for %s: %s\n", argv[i], "");
+            printf("Invalid argument for %s: %s\n\n", argv[i], "");
             return 0;
         }
         else if (is_num_shoes(argv[i]))
@@ -83,7 +83,7 @@ int parse_command_line(int argc, char *argv[], menuoptions_t *options)
             int num_shoes = str_to_int(argv[++i]);
             if (num_shoes == 0)
             {
-                printf("Number of shoes should be greater than 0.\n");
+                printf("Number of shoes should be greater than 0.\n\n");
                 return 0;
             }
             options->num_shoes = num_shoes;
@@ -93,11 +93,12 @@ int parse_command_line(int argc, char *argv[], menuoptions_t *options)
             char *strategy = argv[++i];
             if (!str_equal(strategy, RANDOM_STRATEGY) && !str_equal(strategy, DOUBLING))
             {
-                printf("Invalid strategy: %s\n", strategy);
+                printf("Invalid strategy: %s\n\n", strategy);
                 return 0;
             }
             options->strategy = strategy;
         }
+        i++;
     }
 
     free_hashset(options_set);

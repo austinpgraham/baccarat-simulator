@@ -5,7 +5,7 @@ SRC_DIR = src
 BIN_DIR = bin
 INCLUDE_DIR = include
 
-SRC = $(wildcard $(SRC_DIR)/*.c)
+SRC = $(shell find $(SRC_DIR) -name "*.c")
 OBJ = $(patsubst $(SRC_DIR)/%.c,$(BIN_DIR)/%.o,$(SRC))
  
 TARGET = $(BIN_DIR)/baccarat
@@ -16,6 +16,7 @@ $(TARGET): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $@
 
 $(BIN_DIR)/%.o: $(SRC_DIR)/%.c | $(BIN_DIR)
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR):
@@ -24,4 +25,7 @@ $(BIN_DIR):
 clean:
 	rm -rf $(BIN_DIR)
 
-.PHONY: all clean
+install:
+	cp $(TARGET) /usr/local/bin
+
+.PHONY: all clean install

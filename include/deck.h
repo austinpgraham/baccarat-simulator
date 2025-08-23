@@ -15,11 +15,12 @@ typedef struct
 typedef struct
 {
     int current_card;
+    int total_decks;
     card_t **cards;
 } shoe_t;
 
 shoe_t *create_shoe(int total_decks);
-void shuffle(shoe_t *shoe);
+void shuffle(int total_shuffles, shoe_t *shoe);
 void destroy_shoe(shoe_t *shoe);
 
 #endif // DECK_H

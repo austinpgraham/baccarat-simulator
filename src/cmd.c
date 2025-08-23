@@ -54,6 +54,11 @@ int is_num_shoes(const char *option)
     return is_command(NUM_SHOES_SHORT, NUM_SHOES_LONG, option);
 }
 
+int is_num_decks(const char *option)
+{
+    return is_command(NUM_DECKS_SHORT, NUM_DECKS_LONG, option);
+}
+
 int is_strategy(const char *option)
 {
     return is_command(STRATEGY_SHORT, STRATEGY_LONG, option);
@@ -94,6 +99,16 @@ int parse_command_line(int argc, char *argv[], menuoptions_t *options)
                 return 0;
             }
             options->num_shoes = num_shoes;
+        }
+        else if (is_num_decks(argv[i]))
+        {
+            int num_decks = str_to_int(argv[++i]);
+            if (num_decks == 0)
+            {
+                printf("Number of decks should be greater than 0.\n\n");
+                return 0;
+            }
+            options->num_decks = num_decks;
         }
         else if (is_strategy(argv[i]))
         {

@@ -32,7 +32,24 @@ shoe_t *create_shoe(int total_decks)
     shoe_t *shoe = malloc(sizeof(shoe_t));
     shoe->cards = all_decks;
     shoe->current_card = 0;
+    shoe->total_decks = total_decks;
     return shoe;
+}
+
+void shuffle(int total_shuffles, shoe_t *shoe)
+{
+    int max_card_index = shoe->total_decks * DECK_SIZE - 1;
+    for (int j = 0; j < total_shuffles; j++)
+    {
+        for (int i = 0; i <= max_card_index; i++)
+        {
+            int swap_with_index = rand() % max_card_index;
+            card_t *swap_card = shoe->cards[i];
+            card_t *with_card = shoe->cards[swap_with_index];
+            shoe->cards[i] = with_card;
+            shoe->cards[swap_with_index] = swap_card;
+        }
+    }
 }
 
 void destroy_shoe(shoe_t *shoe)

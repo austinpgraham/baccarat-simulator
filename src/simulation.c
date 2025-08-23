@@ -1,6 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "cmd.h"
 #include "rules.h"
+#include "deck.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,7 +15,8 @@ int main(int argc, char *argv[])
         return success ? 0 : 1;
     }
 
-    printf("num_shoes: %d, strategy: %s\n", options.num_shoes, options.strategy);
+    // Seed the simulation
+    srand((unsigned int)time(NULL));
 
     return 0;
 }

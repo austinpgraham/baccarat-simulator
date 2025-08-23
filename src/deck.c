@@ -52,6 +52,15 @@ void shuffle(int total_shuffles, shoe_t *shoe)
     }
 }
 
+card_t *discard(shoe_t *shoe)
+{
+    if (shoe->current_card == DECK_SIZE * shoe->total_decks)
+    {
+        return NULL;
+    }
+    return shoe->cards[shoe->current_card++];
+}
+
 void destroy_shoe(shoe_t *shoe)
 {
     for (int i = 0; i < TOTAL_SUITS * TOTAL_SYMBOLS; i++)

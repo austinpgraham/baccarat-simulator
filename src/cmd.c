@@ -4,10 +4,16 @@
 #include "ds/hashset.h"
 #include "ds/string.h"
 
+const int DEFAULT_NUM_SHOES = 1;
+const int DEFAULT_NUM_DECKS = 8;
+const char *DEFAULT_STRATEGY = "random";
+
 const char *HELP_SHORT = "-h";
 const char *HELP_LONG = "--help";
 const char *NUM_SHOES_SHORT = "-n";
 const char *NUM_SHOES_LONG = "--num-shoes";
+const char *NUM_DECKS_SHORT = "-d";
+const char *NUM_DECKS_LONG = "--num-decks";
 const char *STRATEGY_SHORT = "-s";
 const char *STRATEGY_LONG = "--strategy";
 
@@ -16,8 +22,9 @@ void display_help_menu()
     printf("Usage: baccarat <options>\n");
     printf("Options:\n");
     printf("  %s, %s                  Display this help menu\n", HELP_SHORT, HELP_LONG);
-    printf("  %s, %s <num>       Number of shoes to simulate (default: 1)\n", NUM_SHOES_SHORT, NUM_SHOES_LONG);
-    printf("  %s, %s <strategy>   Betting strategy to use (default: 'random')\n", STRATEGY_SHORT, STRATEGY_LONG);
+    printf("  %s, %s <num>       Number of shoes to simulate (default: %d)\n", NUM_SHOES_SHORT, NUM_SHOES_LONG, DEFAULT_NUM_SHOES);
+    printf("  %s, %s <num>       Number of decks to simulate (default: %d)\n", NUM_DECKS_SHORT, NUM_DECKS_LONG, DEFAULT_NUM_DECKS);
+    printf("  %s, %s <strategy>   Betting strategy to use (default: '%s')\n", STRATEGY_SHORT, STRATEGY_LONG, DEFAULT_STRATEGY);
 }
 
 hashset_t *create_options_set()

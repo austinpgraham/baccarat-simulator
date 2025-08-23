@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[])
 {
-    menuoptions_t options = {0, 1, RANDOM_STRATEGY};
+    menuoptions_t options = {0, DEFAULT_NUM_SHOES, DEFAULT_NUM_DECKS, DEFAULT_STRATEGY};
     int success = parse_command_line(argc, argv, &options);
     if (!success || options.show_help)
     {

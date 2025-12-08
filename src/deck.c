@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "deck.h"
+#include "panic.h"
 
 const char SUITS[] = {'S', 'C', 'H', 'D'};
 const char CARD_SYMBOLS[] = {'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'};
@@ -55,9 +56,7 @@ void shuffle(int total_shuffles, shoe_t *shoe)
 card_t *discard(shoe_t *shoe)
 {
     if (shoe->current_card == DECK_SIZE * shoe->total_decks)
-    {
-        return NULL;
-    }
+        panic("Attempted to draw a card from an empty deck.");
     return shoe->cards[shoe->current_card++];
 }
 

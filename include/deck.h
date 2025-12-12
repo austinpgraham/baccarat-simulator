@@ -23,5 +23,8 @@ shoe_t *create_shoe(int total_decks);
 void shuffle(int total_shuffles, shoe_t *shoe);
 card_t *discard(shoe_t *shoe);
 void destroy_shoe(shoe_t *shoe);
+int is_shoe_finished(shoe_t *shoe);
+void print_card_value(card_t *card);
+void print_shoe(shoe_t *shoe);
 
 #endif // DECK_H

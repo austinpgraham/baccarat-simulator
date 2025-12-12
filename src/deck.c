@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "deck.h"
 #include "panic.h"
 
@@ -24,7 +25,7 @@ shoe_t *create_shoe(int total_decks)
                 new_card->symbol = CARD_SYMBOLS[j];
                 new_card->value = SYMBOL_VALUES[j];
                 int deck_pos = i * TOTAL_SYMBOLS + j;
-                int final_pos = k * total_decks + deck_pos;
+                int final_pos = k * TOTAL_SUITS * TOTAL_SYMBOLS + deck_pos;
                 all_decks[final_pos] = new_card;
             }
         }
@@ -68,4 +69,35 @@ void destroy_shoe(shoe_t *shoe)
     }
     free(shoe->cards);
     free(shoe);
+}
+
+int is_shoe_finished(shoe_t *shoe)
+{
+    int total_size = DECK_SIZE * shoe->total_decks;
+    // This is generally decided by a casino, making the cut card
+    // appear 7 from the end for the sake of the simulation. Shouldn't
+    // affect results.
+    return total_size - shoe->current_card <= 7;
+}
+
+void print_card_value(card_t *card)
+{
+    if (card == NULL)
+        printf("NONE");
+    else
+    {
+        printf("%c%c", card->suit, card->symbol);
+    }
+}
+
+void print_shoe(shoe_t *shoe)
+{
+    int last_index = DECK_SIZE * shoe->total_decks - 1;
+    for (int i = 0; i < last_index; i++)
+    {
+        print_card_value(shoe->cards[i]);
+        printf(", ");
+    }
+    print_card_value(shoe->cards[last_index]);
+    printf("\n");
 }

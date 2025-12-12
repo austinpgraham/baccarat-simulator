@@ -13,7 +13,9 @@ typedef struct
 } hand_t;
 
 hand_t *init_hand();
-void draw_card(hand_t *hand, shoe_t *shoe);
+void clear_hand(hand_t *hand);
+card_t *draw_card(hand_t *hand, shoe_t *shoe);
 void free_hand(hand_t *hand);
+void print_hand(hand_t *hand);
 
 #endif // HAND_H

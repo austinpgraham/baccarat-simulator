@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "cmd.h"
-#include "rules.h"
+#include "game.h"
 #include "ds/hashset.h"
 #include "ds/string.h"
 

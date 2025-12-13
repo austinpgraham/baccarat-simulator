@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include "cmd.h"
-#include "rules.h"
 #include "deck.h"
 #include "game.h"
 
@@ -26,7 +25,7 @@ int main(int argc, char *argv[])
         printf("Playing shoe #%d...\n", i + 1);
         shoe_t *shoe = create_shoe(options.num_decks);
         shuffle(10, shoe);
-        play_shoe(shoe);
+        play_shoe(shoe, options.strategy, 0);
         destroy_shoe(shoe);
     }
 

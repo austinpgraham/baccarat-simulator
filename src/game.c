@@ -1,9 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "game.h"
-#include "deck.h"
-#include "hand.h"
 #include "panic.h"
+#include "ds/string.h"
+
+const char *RANDOM_STRATEGY = "random";
+const char *DOUBLING = "doubling";
 
 const int INITIAL_CARD_COUNT = 2;
 const int MAX_SCORE_MODULO = 10;
@@ -70,7 +72,7 @@ winner_t play_hand(hand_t *player_hand, hand_t *banker_hand, shoe_t *shoe)
     // them is, we calculate the score right away.
     if (!is_natural(player_score) && !is_natural(banker_score))
     {
-        int player_stands = player_score <= 5;
+        int player_stands = player_score == 6 || player_score == 7;
         card_t *player_third_card = NULL;
         if (!player_stands)
         {
@@ -95,11 +97,18 @@ winner_t play_hand(hand_t *player_hand, hand_t *banker_hand, shoe_t *shoe)
     return winner;
 }
 
-void print_game_result(winner_t winner, hand_t *player_hand, hand_t *banker_hand)
+inline const char *get_winner_str(winner_t value)
+{
+    return value == BANKER ? "BANKER" : "PLAYER";
+}
+
+void print_hand_result(bet_t *bet, winner_t winner, hand_t *player_hand, hand_t *banker_hand, int result_pot)
 {
     printf("HAND RESULT\n");
     printf("---------\n");
-    printf("WINNER: %s\n", winner == BANKER ? "BANKER" : "PLAYER");
+    printf("BET: %s\n", get_winner_str(bet->winner));
+    printf("WINNER: %s\n", get_winner_str(winner));
+    printf("POT: %s%d\n", (result_pot < 0) ? "" : "+", result_pot);
     printf("PLAYER HAND: ");
     print_hand(player_hand);
     printf("BANKER_HAND: ");
@@ -107,10 +116,38 @@ void print_game_result(winner_t winner, hand_t *player_hand, hand_t *banker_hand
     printf("---------\n");
 }
 
-void play_shoe(shoe_t *shoe)
+bet_t make_bet(const char *strategy, winner_t last_winner, bet_t *last_bet)
+{
+    bet_t new_bet = {0, PLAYER};
+    if (str_equal(strategy, RANDOM_STRATEGY))
+    {
+        new_bet.winner = (rand() % 2) ? BANKER : PLAYER;
+        new_bet.value = 1;
+        return new_bet;
+    }
+    else if (str_equal(strategy, DOUBLING))
+    {
+        new_bet.winner = last_winner;
+        new_bet.value = (last_bet->winner == last_winner) ? last_bet->value * 2 : 1;
+        return new_bet;
+    }
+    panic("Shoe was handed a strategy that is not known.");
+    return new_bet; // Panic will exit program, this will not happen but appeases the compiler.
+}
+
+void play_shoe(shoe_t *shoe, const char *strategy, int start_pot)
 {
     hand_t *player_hand = init_hand();
     hand_t *banker_hand = init_hand();
+    int pot = start_pot;
+
+    // Set the last winner to the banker, but the
+    // last bet winner to the PLAYER so we mimic a loss.
+    // For any strategy, this should restart the strategy.
+    winner_t last_winner = BANKER;
+    bet_t last_bet;
+    last_bet.value = 0;
+    last_bet.winner = PLAYER;
 
     printf("Burning %d cards...\n", CARDS_TO_BURN);
     for (int i = 0; i < CARDS_TO_BURN; i++)
@@ -123,8 +160,21 @@ void play_shoe(shoe_t *shoe)
     {
         clear_hand(player_hand);
         clear_hand(banker_hand);
+
+        bet_t bet = make_bet(strategy, last_winner, &last_bet);
+        // Take the bet out of the pot, if we win we get paid it back
+        // hence 2:1 odds.
+        pot -= bet.value;
         winner_t hand_winner = play_hand(player_hand, banker_hand, shoe);
-        print_game_result(hand_winner, player_hand, banker_hand);
+
+        if (bet.winner == hand_winner)
+        {
+            // Winning pays 2:1
+            pot += bet.value * 2;
+        }
+        last_bet = bet;
+
+        print_hand_result(&bet, hand_winner, player_hand, banker_hand, pot);
         should_stop = is_shoe_finished(shoe);
     }
 

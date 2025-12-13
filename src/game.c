@@ -173,6 +173,7 @@ void play_shoe(shoe_t *shoe, const char *strategy, int start_pot)
             pot += bet.value * 2;
         }
         last_bet = bet;
+        last_winner = hand_winner;
 
         print_hand_result(&bet, hand_winner, player_hand, banker_hand, pot);
         should_stop = is_shoe_finished(shoe);

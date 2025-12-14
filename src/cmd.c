@@ -113,7 +113,7 @@ int parse_command_line(int argc, char *argv[], menuoptions_t *options)
         else if (is_strategy(argv[i]))
         {
             char *strategy = argv[++i];
-            if (!str_equal(strategy, RANDOM_STRATEGY) && !str_equal(strategy, DOUBLING))
+            if (!str_equal(strategy, RANDOM_STRATEGY) && !str_equal(strategy, DOUBLING) && !str_equal(strategy, MARTINGALE))
             {
                 printf("Invalid strategy: %s\n\n", strategy);
                 return 0;

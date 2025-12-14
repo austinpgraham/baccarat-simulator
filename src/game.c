@@ -6,6 +6,7 @@
 
 const char *RANDOM_STRATEGY = "random";
 const char *DOUBLING = "doubling";
+const char *MARTINGALE = "martingale";
 
 const int INITIAL_CARD_COUNT = 2;
 const int MAX_SCORE_MODULO = 10;
@@ -131,11 +132,17 @@ bet_t make_bet(const char *strategy, winner_t last_winner, bet_t *last_bet)
         new_bet.value = (last_bet->winner == last_winner) ? last_bet->value * 2 : 1;
         return new_bet;
     }
+    else if (str_equal(strategy, MARTINGALE))
+    {
+        new_bet.winner = (rand() % 2) ? BANKER : PLAYER;
+        new_bet.value = (last_bet->winner != last_winner) ? last_bet->value * 2 : 1;
+        return new_bet;
+    }
     panic("Shoe was handed a strategy that is not known.");
     return new_bet; // Panic will exit program, this will not happen but appeases the compiler.
 }
 
-void play_shoe(shoe_t *shoe, const char *strategy, int start_pot)
+int play_shoe(shoe_t *shoe, const char *strategy, int start_pot)
 {
     hand_t *player_hand = init_hand();
     hand_t *banker_hand = init_hand();
@@ -149,7 +156,7 @@ void play_shoe(shoe_t *shoe, const char *strategy, int start_pot)
     last_bet.value = 0;
     last_bet.winner = PLAYER;
 
-    printf("Burning %d cards...\n", CARDS_TO_BURN);
+    // Burn 3 cards, this is generally set by the casino.
     for (int i = 0; i < CARDS_TO_BURN; i++)
     {
         discard(shoe);
@@ -181,4 +188,6 @@ void play_shoe(shoe_t *shoe, const char *strategy, int start_pot)
 
     free_hand(player_hand);
     free_hand(banker_hand);
+
+    return pot;
 }

@@ -20,12 +20,13 @@ int main(int argc, char *argv[])
     // Seed the simulation
     srand((unsigned int)time(NULL));
 
+    int pot = 0;
     for (int i = 0; i < options.num_shoes; i++)
     {
-        printf("Playing shoe #%d...\n", i + 1);
+        printf("PLAYING SHOE: %d\n", i + 1);
         shoe_t *shoe = create_shoe(options.num_decks);
         shuffle(10, shoe);
-        play_shoe(shoe, options.strategy, 0);
+        pot = play_shoe(shoe, options.strategy, pot);
         destroy_shoe(shoe);
     }
 

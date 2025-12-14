@@ -56,3 +56,7 @@ dkms.conf
 
 # binaries
 bin/*
+out/*
+
+# Python stuff
+venv/*

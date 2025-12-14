@@ -24,3 +24,7 @@ make run
 This small project is largely just for me to practice my C. It's not great code, I was just trying
 to practice the memory management stuff since it's not in my day-to-day. If anyone just so happens to
 stumble across this and has some pointers, please feel free!
+
+That being said, you'll see many things were done manually that are definitely in the standard library, or
+have a package somewhere I could grab. I wrote my own home-rolled version just for the sake of getting
+the practice.
